@@ -1,0 +1,87 @@
+<!-- views/equipment/list.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Учёт оборудования</title>
+    <!-- Подключаем существующий общий файл стилей style.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>УЧЁТ ОБОРУДОВАНИЯ</h1>
+        <p class="subtitle">Управление техникой, инвентарем и их текущим состоянием</p>
+
+        <!-- Вывод системных сообщений flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}" style="margin-bottom: 15px; padding: 10px; border-radius: 6px; border-left: 4px solid #2f8fff; background: #f0f7ff;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Список элементов -->
+        <ul style="list-style: none; padding-left: 0;">
+            {% for item in items %}
+            <li style="padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>ID {{ item.id }}. {{ item.name }}</strong>
+                    <span style="color: #666; margin-left: 8px;">(Тип: {{ item.type }})</span> —
+                    <span style="font-weight: 500;">{{ item.status }}</span>
+                    <!-- ИЗМЕНЕНИЕ: Отображение текущего количества на складе -->
+                    <span style="background: #e6f7ff; color: #1890ff; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; margin-left: 10px;">
+                        В наличии: {{ item.quantity }} шт.
+                    </span>
+                    {% if item.description %}
+                        <br><small style="color: #888; display: block; margin-top: 4px;">Описание: {{ item.description }}</small>
+                    {% endif %}
+                </div>
+
+                <form method="post" action="{{ url_for('equipment.delete_equipment', eq_id=item.id) }}" style="margin: 0;">
+                    <button type="submit" style="color: #ff4d4f; border: none; background: none; cursor: pointer; font-size: 1.1rem;">[x]</button>
+                </form>
+            </li>
+            {% else %}
+            <p style="color: #999;">В базе данных пока нет зарегистрированного оборудования.</p>
+            {% endfor %}
+        </ul>
+
+        <hr style="margin: 24px 0; border: 0; border-top: 1px solid #eee;">
+
+        <!-- Форма добавления -->
+        <h3>Добавить новое оборудование</h3>
+        <form method="post" action="{{ url_for('equipment.create_equipment') }}">
+            <input name="name" placeholder="Название" required style="margin-bottom: 8px;">
+            <input name="type" placeholder="Тип" required style="margin-bottom: 8px;">
+            <input name="status" placeholder="Состояние" required style="margin-bottom: 8px;">
+            <!-- ИЗМЕНЕНИЕ: Добавлено числовое поле для ввода количества при создании -->
+            <input type="number" name="quantity" min="0" placeholder="Количество на складе" required style="margin-bottom: 8px; width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+            <textarea name="description" placeholder="Краткое описание характеристик или неисправностей" style="width: 100%; margin-bottom: 12px; height: 60px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit; box-sizing: border-box;"></textarea>
+            <button type="submit" class="button primary">Добавить в базу</button>
+        </form>
+
+        <hr style="margin: 24px 0; border: 0; border-top: 1px solid #eee;">
+
+        <!-- Форма редактирования -->
+        <h3>Изменить данные оборудования</h3>
+        <form method="post" action="{{ url_for('equipment.update_equipment') }}">
+            <input name="id" placeholder="ID оборудования" required style="width: 120px; margin-bottom: 8px;">
+            <input name="new_name" placeholder="Новое название" style="margin-bottom: 8px;">
+            <input name="new_type" placeholder="Новый тип" style="margin-bottom: 8px;">
+            <input name="new_status" placeholder="Новое состояние" style="margin-bottom: 8px;">
+            <!-- ИЗМЕНЕНИЕ: Добавлено числовое поле для редактирования количества -->
+            <input type="number" name="new_quantity" min="0" placeholder="Новое количество" style="margin-bottom: 8px; width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+            <textarea name="new_description" placeholder="Новое описание" style="width: 100%; margin-bottom: 12px; height: 60px; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-family: inherit; box-sizing: border-box;"></textarea>
+            <button type="submit" class="button">Сохранить изменения</button>
+        </form>
+
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between;">
+            <a href="{{ url_for('books.list_books') }}" style="color: #2f8fff; text-decoration: none;">← К списку мероприятий</a>
+            <span style="color: #999;">© 2026 Панель администратора</span>
+        </footer>
+    </div>
+</body>
+</html>

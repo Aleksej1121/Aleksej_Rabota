@@ -1,0 +1,102 @@
+<!-- views/books/list.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Школьные мероприятия</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>ШКОЛЬНЫЕ МЕРОПРИЯТИЯ</h1>
+        <p class="subtitle">Список текущих событий и управление записями</p>
+
+        <div class="actions">
+            <a href="{{ url_for('equipment.list_equipment') }}">Перейти к учёту оборудования →</a>
+        </div>
+
+        <!-- ИЗМЕНЕНИЕ: Форма поиска по мероприятиям -->
+        <form method="get" action="{{ url_for('books.list_books') }}" style="margin: 20px 0; display: flex; gap: 10px;">
+            <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск по названию или месту..." style="flex: 1; padding: 8px 12px;">
+            <button type="submit" class="button primary" style="margin: 0;">Найти</button>
+            {% if search_query %}
+                <!-- Кнопка сброса поиска, если он активен -->
+                <a href="{{ url_for('books.list_books') }}" class="button" style="text-decoration: none; background: #eee; color: #333; line-height: 2.2;">Сбросить</a>
+            {% endif %}
+        </form>
+
+        <!-- Блок вывода системных сообщений (flash) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages" style="margin-top: 15px;">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <ul>
+            {% for b in books %}
+            <li>
+                <strong>{{ b.id }}.</strong> {{ b.mer }} — {{ b.dater }} — {{ b.proved }}
+
+                <!-- Отображение названия привязанной техники и её количества -->
+                {% if b.equipment_id and b.spent_quantity > 0 and b.equipment %}
+                    <span style="color: #2f8fff; font-size: 0.9em; margin-left: 10px; font-style: italic; font-weight: 500;">
+                        (Выдано: {{ b.equipment.name }} — {{ b.spent_quantity }} шт.)
+                    </span>
+                {% endif %}
+
+                <form method="post" action="{{ url_for('books.delete_book', book_id=b.id) }}" style="display:inline; margin-left: 10px;">
+                    <button type="submit" style="color: red; border: none; background: none; cursor: pointer;">[x]</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <hr style="margin: 24px 0; border: 0; border-top: 1px solid #eee;">
+
+        <h3>Добавить мероприятие</h3>
+        <form method="post" action="{{ url_for('books.create_book') }}" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px;">
+            <input name="mer" placeholder="Название мероприятия" required>
+            <input name="dater" placeholder="Дата проведения" required>
+            <input name="proved" placeholder="Место проведения" required>
+
+            <div style="display: flex; gap: 10px; align-items: center; margin-top: 5px;">
+                <div style="flex: 2;">
+                    <label for="equipment_id" style="font-size: 0.85em; color: #555; display: block; margin-bottom: 3px;">Оборудование:</label>
+                    <select name="equipment_id" id="equipment_id" style="width: 100%;">
+                        <option value="">-- Без оборудования --</option>
+                        {% for eq in equipment_list %}
+                            <option value="{{ eq.id }}">{{ eq.name }} (Доступно: {{ eq.quantity }} шт.)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label for="amount" style="font-size: 0.85em; color: #555; display: block; margin-bottom: 3px;">Кол-во:</label>
+                    <input type="number" id="amount" name="amount" min="1" placeholder="0" style="width: 100%; box-sizing: border-box; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+                </div>
+            </div>
+
+            <button type="submit" class="button primary" style="margin-top: 5px;">Добавить</button>
+        </form>
+
+        <hr style="margin: 24px 0; border: 0; border-top: 1px solid #eee;">
+
+        <h3>Изменить мероприятие</h3>
+        <form method="post" action="{{ url_for('books.update_book') }}">
+            <input name="id" placeholder="ID записи" required style="width: 80px;">
+            <input name="new_mer" placeholder="Новое название">
+            <input name="new_dater" placeholder="Новая дата">
+            <input name="new_proved" placeholder="Новое место">
+            <button type="submit" class="button">Заменить</button>
+        </form>
+
+        <footer>
+            <p>© 2026 Система учёта мероприятий</p>
+        </footer>
+    </div>
+</body>
+</html>

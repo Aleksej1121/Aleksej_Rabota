@@ -1,0 +1,32 @@
+<!-- views/auth/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Авторизация пользователя</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <label for="username">Введите имя:</label><br>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Введите пароль:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <input type="submit" value="Авторизация" class="button primary">
+        </form>
+    </div>
+</body>
+</html>
