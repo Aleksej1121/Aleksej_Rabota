@@ -2,7 +2,7 @@
 
 ![alt text](https://private-user-images.githubusercontent.com/288481176/599173144-62fa6d04-f0ed-4070-ac05-03f39893930b.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzk5MzcwMjksIm5iZiI6MTc3OTkzNjcyOSwicGF0aCI6Ii8yODg0ODExNzYvNTk5MTczMTQ0LTYyZmE2ZDA0LWYwZWQtNDA3MC1hYzA1LTAzZjM5ODkzOTMwYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwNTI4JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDUyOFQwMjUyMDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03YmE5NjViY2E2YjA1MmQwNzJmNWYxZjE2MjI0ZGFlZTIwYzEyZmY5NWRjOTk4N2UxN2NiNWVhMjIyYTA5YzgyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.Q3tNLKU2oVBFHSTwSBhXe8HFVLxqZUbX1mMDjOi3-9Y)
 
-                                                  Мои достижения без пар
+Мои достижения во время пар
 
 Репозиторий, содержащий приложение об учёте мороприятий и оборудования, созданное на Flask
 
